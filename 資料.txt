@@ -1,0 +1,3 @@
+https://nfutest.pythonanywhere.com/docs
+
+https://mybrowseraddon.com/access-control-allow-origin.html?v=0.2.0&type=install

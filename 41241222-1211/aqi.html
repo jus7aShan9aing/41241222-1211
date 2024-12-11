@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQI 查询</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>空气质量查询</h1>
+    <button onclick="getAQIData()">查询最新 AQI 数据</button>
+    <br><br>
+    <table id="aqiTable">
+        <thead>
+            <tr>
+                <th>站点名称</th>
+                <th>项目名称</th>
+                <th>监测值</th>
+                <th>监测时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 数据将插入这里 -->
+        </tbody>
+    </table>
+
+    <script>
+        function getAQIData() {
+            const apiKey = '791f3ce2-d786-4da9-a550-94750a9d502a';
+            const url = `https://data.moenv.gov.tw/api/v2/aqx_p_13?api_key=${apiKey}`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const results = data.fields;
+                    const tbody = document.querySelector('#aqiTable tbody');
+                    tbody.innerHTML = ''; // 清空之前的数据
+
+                    // 遍历每个监测值并展示
+                    for (let i = 0; i < results.length; i++) {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${results[i].sitename}</td>
+                            <td>${results[i].itemname}</td>
+                            <td>${results[i].monitorvalue00}</td>
+                            <td>${results[i].monitordate}</td>
+                        `;
+                        tbody.appendChild(row);
+                    }
+                })
+                .catch(error => {
+                    console.error('获取数据失败:', error);
+                });
+        }
+    </script>
+</body>
+</html>
